@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nextera Software Services | IT Consulting & IT Recruitment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080c10;
+      --bg2: #0d1117;
+      --bg3: #111820;
+      --border: rgba(0,220,180,0.12);
+      --accent: #00dcb4;
+      --accent2: #0ef;
+      --accent-dim: rgba(0,220,180,0.15);
+      --text: #e8edf2;
+      --text-dim: #7a8a99;
+      --card: #0d1520;
+      --glow: 0 0 40px rgba(0,220,180,0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── GRID BG ── */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,220,180,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,220,180,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 5%;
+      background: rgba(8,12,16,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .logo-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      display: block;
+      margin-top: 2px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--accent); }
+
+    .nav-cta {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent) !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 2px;
+      transition: background 0.2s, color 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent) !important;
+      color: var(--bg) !important;
+    }
+
+    /* ── SECTIONS ── */
+    section { position: relative; z-index: 1; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 7rem 5% 5rem;
+      overflow: hidden;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 2rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      max-width: 14ch;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.35s forwards;
+    }
+
+    h1 .accent { color: var(--accent); }
+
+    h1 .outline {
+      -webkit-text-stroke: 1.5px var(--text-dim);
+      color: transparent;
+    }
+
+    .hero-sub {
+      margin-top: 1.75rem;
+      max-width: 48ch;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-actions {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.65s forwards;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 0.85rem 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: box-shadow 0.2s, transform 0.2s;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    }
+
+    .btn-primary:hover {
+      box-shadow: var(--glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.85rem 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* floating badge */
+    .hero-badge {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 0.5rem;
+      background: radial-gradient(circle at center, rgba(0,220,180,0.06), transparent 70%);
+      animation: spin-slow 20s linear infinite, fadeIn 1s 0.8s both;
+    }
+
+    .hero-badge-text {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .hero-badge-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .hero-badge-ring {
+      position: absolute;
+      inset: -15px;
+      border-radius: 50%;
+      border: 1px dashed rgba(0,220,180,0.2);
+      animation: spin-slow 30s linear infinite reverse;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      overflow: hidden;
+      padding: 1rem 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 3rem;
+      animation: marquee 18s linear infinite;
+      white-space: nowrap;
+    }
+
+    .marquee-item {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .marquee-item::before {
+      content: '◆';
+      color: var(--accent);
+      font-size: 0.5rem;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      padding: 7rem 5%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 1.5rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text {
+      color: var(--text-dim);
+      font-size: 0.88rem;
+      line-height: 1.9;
+    }
+
+    .about-text p + p { margin-top: 1rem; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .stat-box {
+      background: var(--card);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-box::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px;
+      height: 100%;
+      background: var(--accent);
+      transform: scaleY(0);
+      transition: transform 0.4s;
+      transform-origin: bottom;
+    }
+
+    .stat-box:hover::after { transform: scaleY(1); }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: 0.5rem;
+    }
+
+    /* ── SERVICES ── */
+    #services {
+      padding: 7rem 5%;
+      background: var(--bg2);
+    }
+
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .service-card {
+      background: var(--bg);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .service-card:hover {
+      background: var(--card);
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-num {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0.7;
+    }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-size: 1.4rem;
+    }
+
+    .service-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .service-desc {
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      line-height: 1.85;
+    }
+
+    .service-list {
+      margin-top: 1.5rem;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .service-list li {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .service-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    /* ── WHY US ── */
+    #why {
+      padding: 7rem 5%;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .why-card {
+      border: 1px solid var(--border);
+      padding: 2rem;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .why-card:hover { border-color: rgba(0,220,180,0.4); }
+
+    .why-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .why-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .why-desc {
+      color: var(--text-dim);
+      font-size: 0.78rem;
+      line-height: 1.8;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      padding: 7rem 5%;
+      background: var(--bg2);
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-info h2 { margin-bottom: 1.5rem; }
+
+    .contact-info p {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      line-height: 1.9;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+
+    .contact-item:hover { border-color: rgba(0,220,180,0.35); }
+
+    .contact-item-icon {
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .contact-item-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.3rem;
+    }
+
+    .contact-item-value {
+      font-size: 0.82rem;
+      color: var(--text);
+    }
+
+    .contact-item-value a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-item-value a:hover { color: var(--accent); }
+
+    /* Contact form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.85rem 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    .form-group select option { background: var(--bg2); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2.5rem 5%;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── TERMINAL BLOCK ── */
+    .terminal {
+      background: #050810;
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      font-size: 0.75rem;
+      line-height: 1.8;
+      margin-top: 2rem;
+    }
+
+    .terminal-line { display: flex; gap: 0.75rem; }
+    .terminal-prompt { color: var(--accent); flex-shrink: 0; }
+    .terminal-cmd { color: #7fdbca; }
+    .terminal-out { color: var(--text-dim); padding-left: 1.5rem; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes spin-slow {
+      from { transform: translateY(-50%) rotate(0deg); }
+      to { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--accent);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s, transform 0.7s;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-badge { display: none; }
+      .services-header { flex-direction: column; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <img src="nextera-logo.jpg" alt="Nextera Software Services" style="height:80px;" />
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+
+  <h1>
+    Powering <span class="accent">Tech</span><br/>
+    Talent &amp; <span class="outline">Strategy</span>
+  </h1>
+  <p class="hero-sub">
+    Nextera Software Services delivers expert IT Consulting and precision IT Recruitment — connecting Singapore's growing tech ecosystem with the talent and insight it needs to scale.
+  </p>
+  <div class="hero-actions">
+    <a href="#services" class="btn-primary">Explore Services</a>
+    <a href="#contact" class="btn-secondary">Get In Touch</a>
+  </div>
+
+
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">IT Consulting</span>
+    <span class="marquee-item">IT Recruitment</span>
+    <span class="marquee-item">Tech Talent Acquisition</span>
+    <span class="marquee-item">Digital Transformation</span>
+    <span class="marquee-item">Singapore Pte Ltd</span>
+    <span class="marquee-item">Contract Staffing</span>
+    <span class="marquee-item">Permanent Placement</span>
+    <span class="marquee-item">IT Strategy</span>
+    <span class="marquee-item">IT Consulting</span>
+    <span class="marquee-item">IT Recruitment</span>
+    <span class="marquee-item">Tech Talent Acquisition</span>
+    <span class="marquee-item">Digital Transformation</span>
+    <span class="marquee-item">Singapore Pte Ltd</span>
+    <span class="marquee-item">Contract Staffing</span>
+    <span class="marquee-item">Permanent Placement</span>
+    <span class="marquee-item">IT Strategy</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="section-label">About Us</div>
+    <h2>Built for Singapore's Digital Future</h2>
+    <div class="about-text">
+      <p>Nextera Software Services Pte Ltd is a Singapore-based firm specialising in IT Consulting and IT Recruitment. We bridge the gap between businesses seeking technology leadership and professionals ready to make an impact.</p>
+      <p>From early-stage startups to enterprise organisations, we bring clarity to technology decisions and precision to talent strategy — tailored to Singapore's unique market dynamics.</p>
+    </div>
+    <div class="terminal" style="margin-top:2rem;">
+      <div class="terminal-line"><span class="terminal-prompt">$</span><span class="terminal-cmd">nextera --mission</span></div>
+      <div class="terminal-out">→ Delivering IT excellence across Singapore</div>
+      <div class="terminal-line" style="margin-top:0.5rem;"><span class="terminal-prompt">$</span><span class="terminal-cmd">nextera --status</span></div>
+      <div class="terminal-out">→ Active &amp; growing<span class="cursor"></span></div>
+    </div>
+  </div>
+  <div class="about-stats reveal">
+    <div class="stat-box">
+      <div class="stat-num">15+</div>
+      <div class="stat-label">Clients Served</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">100+</div>
+      <div class="stat-label">Placements Made</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">Client Retention</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">SG</div>
+      <div class="stat-label">Focused Market</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div>
+      <div class="section-label">What We Do</div>
+      <h2>Our Core Services</h2>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.82rem;max-width:32ch;line-height:1.7;">Two focused services. One mission — accelerating your technology ambitions.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01 /</div>
+      <div class="service-icon">⚙</div>
+      <div class="service-title">IT Consulting</div>
+      <p class="service-desc">Strategic technology advisory for businesses navigating digital transformation, system modernisation, and IT governance in Singapore's competitive landscape.</p>
+      <ul class="service-list">
+        <li>IT Strategy & Roadmapping</li>
+        <li>Digital Transformation Advisory</li>
+        <li>Technology Architecture Review</li>
+        <li>IT Governance & Compliance</li>
+        <li>Vendor Selection & Management</li>
+      </ul>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">02 /</div>
+      <div class="service-icon">◈</div>
+      <div class="service-title">IT Recruitment Services</div>
+      <p class="service-desc">End-to-end technology talent acquisition — from permanent hires to contract staffing — matching Singapore's top IT professionals with the right opportunities.</p>
+      <ul class="service-list">
+        <li>Permanent IT Placement</li>
+        <li>Contract & Temp Staffing</li>
+        <li>Executive Tech Search</li>
+        <li>Tech Skills Assessment</li>
+        <li>Candidate Screening & Vetting</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="section-label reveal">Why Nextera</div>
+  <h2 class="reveal">The Nextera Advantage</h2>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-icon">🎯</div>
+      <div class="why-title">Singapore-Focused</div>
+      <p class="why-desc">Deep knowledge of the Singapore technology market, MOM regulations, and local hiring norms — no learning curve for your business.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">⚡</div>
+      <div class="why-title">Fast Turnaround</div>
+      <p class="why-desc">Rapid candidate shortlisting and consulting engagements designed to move at the speed of your business — not the other way around.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">🔒</div>
+      <div class="why-title">Vetted Talent</div>
+      <p class="why-desc">Every candidate goes through rigorous technical and cultural screening. We only present professionals we would hire ourselves.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">🤝</div>
+      <div class="why-title">Long-Term Partnership</div>
+      <p class="why-desc">We measure success by client retention. Our consulting relationships are built on trust, transparency, and consistent delivery.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <div class="section-label">Get In Touch</div>
+      <div class="contact-info">
+        <h2>Let's Start a Conversation</h2>
+        <p>Whether you need strategic IT advice or your next technology hire — reach out and our team will respond within one business day.</p>
+      </div>
+      <div class="contact-details">
+        <div class="contact-item">
+          <div class="contact-item-icon">✉</div>
+          <div>
+            <div class="contact-item-label">HR &amp; Careers</div>
+            <div class="contact-item-value">
+              <a href="mailto:hr@nexterasoftwareservices.com">hr@nexterasoftwareservices.com</a>
+            </div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">☎</div>
+          <div>
+            <div class="contact-item-label">Phone</div>
+            <div class="contact-item-value">+65-63030551</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">⌖</div>
+          <div>
+            <div class="contact-item-label">Office Address</div>
+            <div class="contact-item-value">
+              NEXTERA SOFTWARE SERVICES PTE LTD<br/>
+              7 TEMASEK BOULEVARD,#12-07,SUNTEC TOWER ONE, SINGAPORE 038987
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="contact-form reveal">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" />
+      </div>
+      <div class="form-group">
+        <label>Company</label>
+        <input type="text" />
+      </div>
+      <div class="form-group">
+        <label>Enquiry Type</label>
+        <select>
+          <option value="">— Select —</option>
+          <option>IT Consulting</option>
+          <option>IT Recruitment</option>
+          <option>Job Application</option>
+          <option>General Enquiry</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%;text-align:center;" onclick="alert('Thank you! We will be in touch within one business day.')">
+        Send Message →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <img src="nextera-logo.jpg" alt="Nextera Software Services" style="height:60px;" />
+    <div class="footer-copy" style="margin-top:0.4rem;">© 2025 Nextera Software Services Pte Ltd. All rights reserved. UEN: 202612347M</div>
+  </div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
